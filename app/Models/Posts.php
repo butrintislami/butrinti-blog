@@ -9,6 +9,11 @@ class Posts extends Model
 {
     use HasFactory;
 
+    public function __construct()
+    {
+        return $this->midd
+    }
+
     protected $fillable = [
         'user_id',
         'title',
