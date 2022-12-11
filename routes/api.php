@@ -19,5 +19,10 @@ use Illuminate\Support\Facades\Route;
 Route::post('register',[ControllerRegister::class,'register'])->name('register');
 Route::post('login',[ControllerRegister::class,'login'])->name('login');
 
-Route::get('posts',[PostsController::class,'index']);
-Route::get('posts/{id}',[PostsController::class,'update']);
+
+
+Route::middleware('auth:api')->group( function(){
+    Route::get('posts',[PostsController::class,'index']);
+    Route::get('posts/{id}',[PostsController::class,'update']);
+
+});
