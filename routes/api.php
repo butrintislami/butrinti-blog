@@ -22,7 +22,10 @@ Route::post('login',[ControllerRegister::class,'login'])->name('login');
 
 
 Route::middleware('auth:api')->group( function(){
-    Route::get('posts',[PostsController::class,'index']);
-    Route::get('posts/{id}',[PostsController::class,'update']);
+
+        Route::get('posts',[PostsController::class,'index']);
+        Route::get('posts/{id}',[PostsController::class,'update']);
+        Route::post('posts',[PostsController::class,'store']);
+        Route::delete('posts/{id}',[PostsController::class,'destroy']);
 
 });

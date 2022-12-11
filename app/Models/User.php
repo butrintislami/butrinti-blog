@@ -39,7 +39,9 @@ class User extends Authenticatable implements JWTSubject
         'email_verified_at' => 'datetime',
     ];
 
-public function user_details(){
+
+
+    public function user_details(){
     return $this->hasOne(User_details::class);
 }
 

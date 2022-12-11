@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Posts;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class PostsController extends Controller
@@ -18,7 +19,7 @@ public function index()
     public function store(Request $request){
         try{
             $post=new Posts();
-            $post->user_id=$request->user_id;
+            $post->user_id=auth()->id();
             $post->title= $request->title;
             $post->description= $request->description;
 
@@ -49,13 +50,16 @@ public function index()
 
     public function destroy($id){
         try{
+            $uid=auth()->id();
+            $user=User::where('id',$uid)->firstOrFail();
             $post=Posts::findOrfail($id);
-//            $post->user_id=$request->user_id;
 
-
-            if($post->delete()){
-                return response()->json(['status'=>'success','message'=>'Post deleted successfully']);
+            if ($post->user_id==auth()->id() OR $user->role=='admin'){
+                if($post->delete() ){
+                    return response()->json(['status'=>'success','message'=>'Post deleted successfully']);
+                }
             }
+
 
         }catch(\Exception $e){
             return response()->json(['status'=>'fail','message'=>$e->getmessage()]);
