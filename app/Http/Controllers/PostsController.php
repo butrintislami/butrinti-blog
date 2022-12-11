@@ -35,7 +35,6 @@ public function index()
     public function update(Request $request,$id){
         try{
             $post=Posts::findOrfail($id);
-//            $post->user_id=$request->user_id;
             $post->title= $request->title;
             $post->description= $request->description;
 
@@ -51,15 +50,18 @@ public function index()
     public function destroy($id){
         try{
             $uid=auth()->id();
-            $user=User::where('id',$uid)->firstOrFail();
             $post=Posts::findOrfail($id);
+            $user=User::findOrfail($uid);
 
-            if ($post->user_id==auth()->id() OR $user->role=='admin'){
-                if($post->delete() ){
-                    return response()->json(['status'=>'success','message'=>'Post deleted successfully']);
-                }
-            }
 
+                       if ($post->user_id==auth()->id() OR $user->role=='admin'){
+                           $post->delete();
+                           return response()->json(['status'=>'success','message'=>'Post deleted successfully']);
+
+                       }else{
+                           return response()->json(['status'=>'fail','message'=>'You do not have access to delete this post']);
+
+                       }
 
         }catch(\Exception $e){
             return response()->json(['status'=>'fail','message'=>$e->getmessage()]);
