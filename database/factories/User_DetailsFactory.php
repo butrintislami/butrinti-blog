@@ -8,7 +8,7 @@ use Illuminate\Support\Arr;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User_details>
  */
-class UserDetailsFactory extends Factory
+class User_DetailsFactory extends Factory
 {
     /**
      * Define the model's default state.
