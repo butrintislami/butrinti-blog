@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ControllerRegister;
 use App\Http\Controllers\PostsController;
+use App\Http\Controllers\RepliesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -28,5 +29,6 @@ Route::middleware('auth:api')->group( function(){
         Route::post('posts',[PostsController::class,'store']);
         Route::delete('posts/{id}',[PostsController::class,'destroy']);
         Route::put('posts/{id}',[PostsController::class,'update']);
+        Route::post('posts/{id}/comment',[Repliescontroller::class,'store']);
 
 });

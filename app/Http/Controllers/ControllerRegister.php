@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\User_details;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -10,6 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 class ControllerRegister extends Controller
 {
     public  function register(Request $request){
+        try{
         $request->validate([
             'name'=>'required',
             'email'=>'required|email|unique:users,email',
@@ -21,7 +23,22 @@ class ControllerRegister extends Controller
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
 
-        $user->save();
+
+        if($user->save()){
+            $user_d=new User_details();
+            $user_d->user_id=$user->id;
+            $user_d->company=$request->company;
+            $user_d->address=$request->address;
+            $user_d->city=$request->city;
+            $user_d->save();
+
+            return response()->json(['status'=>'success','message'=>'User created successfully']);
+
+        }
+
+            }catch(\Exception $e){
+            return response()->json(['status'=>'fail','message'=>$e->getmessage()]);
+        }
     }
     public function login(Request $request)
     {

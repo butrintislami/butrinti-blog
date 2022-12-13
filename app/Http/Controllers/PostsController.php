@@ -34,12 +34,16 @@ public function index()
 
     public function update(Request $request,$id){
         try{
+            $uid=auth()->id();
             $post=Posts::findOrfail($id);
             $post->title= $request->title;
             $post->description= $request->description;
 
-            if($post->save()){
+            if($post->user_id==$uid){
+                $post->save();
                 return response()->json(['status'=>'success','message'=>'Post updated successfully']);
+            }else{
+                return response()->json(['status'=>'fail','message'=>'You do not have access to edit this post']);
             }
 
         }catch(\Exception $e){
